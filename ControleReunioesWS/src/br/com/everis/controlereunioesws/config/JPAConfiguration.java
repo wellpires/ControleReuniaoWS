@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-import br.com.everis.controlereunioesws.model.Arquivo;
+import br.com.everis.controlereunioesws.model.Reuniao;
 
 @EnableTransactionManagement
 public class JPAConfiguration {
@@ -45,10 +45,10 @@ public class JPAConfiguration {
 		props.setProperty("hibernate.cache.use_query_cache", "true");
 		props.setProperty("hibernate.cache.region.factory_class",
 				"org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
-		props.setProperty("hibernate.hbm2ddl.auto", "create");
+		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
 		factoryBean.setJpaProperties(props);
-		factoryBean.setPackagesToScan(Arquivo.class.getPackage().getName());
+		factoryBean.setPackagesToScan(Reuniao.class.getPackage().getName());
 
 		return factoryBean;
 	}

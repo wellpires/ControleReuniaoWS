@@ -109,7 +109,6 @@ public class Usuario implements Serializable {
 		this.permissao = permissao;
 	}
 
-
 	public List<ReuniaoUsuario> getUsuarioReuniao() {
 		return usuarioReuniao;
 	}

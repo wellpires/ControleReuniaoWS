@@ -19,7 +19,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "reunioes")
 public class Reuniao implements Serializable {
-	private static final long serialVersionUID = -8310830797674584683L;
+
+	private static final long serialVersionUID = 5476814367590068042L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,7 @@ public class Reuniao implements Serializable {
 	@Column(name = "sala", nullable = false, length = 60)
 	private String sala = null;
 
-	@Column(name = "pauta", nullable = false, columnDefinition = "NVARCHAR(MAX)")
+	@Column(name = "pauta", nullable = false, length = 300)
 	private String pauta = null;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.reuniao", cascade = CascadeType.ALL)
