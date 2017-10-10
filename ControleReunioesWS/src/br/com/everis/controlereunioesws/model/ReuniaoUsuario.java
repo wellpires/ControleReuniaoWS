@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "reuniao_has_usuario")
+@Table(name = "reunioes_has_usuarios")
 @AssociationOverrides({
 	@AssociationOverride(name = "pk.reuniao", joinColumns = @JoinColumn(name = "id_reuniao_FK")),
 	@AssociationOverride(name = "pk.usuario", joinColumns = @JoinColumn(name = "id_usuario_FK"))})
@@ -56,5 +56,7 @@ public class ReuniaoUsuario implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		getPk().setUsuario(usuario);
 	}
+	
+	
 	
 }

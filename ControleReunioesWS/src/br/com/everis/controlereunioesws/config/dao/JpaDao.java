@@ -1,4 +1,4 @@
-package br.com.everis.controlereunioesws.dao;
+package br.com.everis.controlereunioesws.config.dao;
 
 import java.lang.reflect.ParameterizedType;
 

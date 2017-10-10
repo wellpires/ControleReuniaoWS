@@ -1,7 +1,6 @@
 package br.com.everis.controlereunioesws.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,11 +34,6 @@ public class Usuario implements Serializable {
 	@Column(name = "nome_completo", nullable = false, length = 100)
 	private String nomeCompleto = null;
 
-	@ManyToMany
-	@JoinTable(name = "usuarios_has_qualificacoes", joinColumns = {
-			@JoinColumn(name = "id_usuario") }, inverseJoinColumns = { @JoinColumn(name = "id_qualificacao") })
-	private List<Qualificacao> qualificacao = new ArrayList<>();
-
 	@ManyToOne
 	@JoinColumn(name = "id_cargo_FK")
 	private Cargo cargo = null;
@@ -49,10 +41,13 @@ public class Usuario implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_permissao_FK")
 	private Permissao permissao = null;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.usuario", cascade = CascadeType.ALL)
-	private List<ReuniaoUsuario> usuarioReuniao;
-	
+	private List<ReuniaoUsuario> usuarioReuniao = null;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.usuario", cascade = CascadeType.ALL)
+	private List<UsuarioQualificacao> usuarioQualificacao = null;
+
 	public Long getIdUsuario() {
 		return idUsuario;
 	}
@@ -85,14 +80,6 @@ public class Usuario implements Serializable {
 		this.nomeCompleto = nomeCompleto;
 	}
 
-	public List<Qualificacao> getQualificacao() {
-		return qualificacao;
-	}
-
-	public void setQualificacao(List<Qualificacao> qualificacao) {
-		this.qualificacao = qualificacao;
-	}
-
 	public Cargo getCargo() {
 		return cargo;
 	}
@@ -117,6 +104,14 @@ public class Usuario implements Serializable {
 		this.usuarioReuniao = reuniaoUsuario;
 	}
 
+	public List<UsuarioQualificacao> getUsuarioQualificacao() {
+		return usuarioQualificacao;
+	}
+
+	public void setUsuarioQualificacao(List<UsuarioQualificacao> usuarioQualificacao) {
+		this.usuarioQualificacao = usuarioQualificacao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -125,9 +120,9 @@ public class Usuario implements Serializable {
 		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
 		result = prime * result + ((nomeCompleto == null) ? 0 : nomeCompleto.hashCode());
 		result = prime * result + ((permissao == null) ? 0 : permissao.hashCode());
-		result = prime * result + ((qualificacao == null) ? 0 : qualificacao.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result + ((usuarioQualificacao == null) ? 0 : usuarioQualificacao.hashCode());
 		result = prime * result + ((usuarioReuniao == null) ? 0 : usuarioReuniao.hashCode());
 		return result;
 	}
@@ -161,11 +156,6 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!permissao.equals(other.permissao))
 			return false;
-		if (qualificacao == null) {
-			if (other.qualificacao != null)
-				return false;
-		} else if (!qualificacao.equals(other.qualificacao))
-			return false;
 		if (senha == null) {
 			if (other.senha != null)
 				return false;
@@ -175,6 +165,11 @@ public class Usuario implements Serializable {
 			if (other.usuario != null)
 				return false;
 		} else if (!usuario.equals(other.usuario))
+			return false;
+		if (usuarioQualificacao == null) {
+			if (other.usuarioQualificacao != null)
+				return false;
+		} else if (!usuarioQualificacao.equals(other.usuarioQualificacao))
 			return false;
 		if (usuarioReuniao == null) {
 			if (other.usuarioReuniao != null)

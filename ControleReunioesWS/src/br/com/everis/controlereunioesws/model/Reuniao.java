@@ -1,7 +1,7 @@
 package br.com.everis.controlereunioesws.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,11 +32,11 @@ public class Reuniao implements Serializable {
 
 	@Column(name = "dt_inicio", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dtInicio = null;
+	private Date dtInicio = null;
 
 	@Column(name = "dt_termino", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dtTermino = null;
+	private Date dtTermino = null;
 
 	@Column(name = "endereco", nullable = false, length = 150)
 	private String endereco = null;
@@ -66,19 +66,19 @@ public class Reuniao implements Serializable {
 		this.assunto = assunto;
 	}
 
-	public Calendar getDtInicio() {
+	public Date getDtInicio() {
 		return dtInicio;
 	}
 
-	public void setDtInicio(Calendar dtInicio) {
+	public void setDtInicio(Date dtInicio) {
 		this.dtInicio = dtInicio;
 	}
 
-	public Calendar getDtTermino() {
+	public Date getDtTermino() {
 		return dtTermino;
 	}
 
-	public void setDtTermino(Calendar dtTermino) {
+	public void setDtTermino(Date dtTermino) {
 		this.dtTermino = dtTermino;
 	}
 
