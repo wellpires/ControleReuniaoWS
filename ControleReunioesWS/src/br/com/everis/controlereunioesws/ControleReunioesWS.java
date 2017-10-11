@@ -45,8 +45,8 @@ public class ControleReunioesWS {
 		}
 	}
 
-	@RequestMapping(value = "/listarReunioes", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<String> listarReunioes(@RequestParam String data) throws Exception{
+	@RequestMapping(value = "/buscarReunioes", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<String> buscarReunioes(@RequestParam(value = "data") String data) throws Exception{
 		try{
 			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
 			

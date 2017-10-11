@@ -45,7 +45,7 @@ public class JPAConfiguration {
 		props.setProperty("hibernate.cache.use_query_cache", "true");
 		props.setProperty("hibernate.cache.region.factory_class",
 				"org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
-//		props.setProperty("hibernate.hbm2ddl.auto", "create");
+//		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
 		factoryBean.setJpaProperties(props);
 		factoryBean.setPackagesToScan(Reuniao.class.getPackage().getName());

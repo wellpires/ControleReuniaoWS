@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +29,7 @@ public class Qualificacao implements Serializable {
 	@Column(name = "instituicao", nullable = false, length = 80)
 	private String instituicao = null;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.qualificacao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pk.qualificacao", cascade = CascadeType.ALL)
 	private List<UsuarioQualificacao> usuarioQualificacao = null;
 
 	public Long getIdQualificacao() {

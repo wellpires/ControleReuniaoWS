@@ -23,7 +23,7 @@ public class ReuniaoServiceImpl extends JpaDao<Integer, Reuniao> implements IReu
 
 	@Override
 	public List<Reuniao> buscarReunioes(Date dtHoje) throws Exception {
-		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("SELECT o FROM Reuniao WHERE  o.dtInicio < :hoje", Reuniao.class);
+		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("SELECT r FROM Reuniao r WHERE  r.dtInicio > :hoje", Reuniao.class);
 		reuniaoQuery.setParameter("hoje", dtHoje);
 		return reuniaoQuery.getResultList();
 	}
