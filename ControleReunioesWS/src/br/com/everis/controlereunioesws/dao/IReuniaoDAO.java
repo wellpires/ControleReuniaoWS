@@ -1,10 +1,10 @@
-package br.com.everis.controlereunioesws.services;
+package br.com.everis.controlereunioesws.dao;
 
 import java.util.List;
 
 import br.com.everis.controlereunioesws.model.Reuniao;
 
-public interface IReuniaoService {
+public interface IReuniaoDAO  {
 	
 	void salvarReuniao(Reuniao reuniao) throws Exception;
 
@@ -17,5 +17,6 @@ public interface IReuniaoService {
 	List<Reuniao> buscarReunioes(Reuniao reuniao) throws Exception;
 	
 	List<Reuniao> listarReunioes() throws Exception;
+	
 
 }

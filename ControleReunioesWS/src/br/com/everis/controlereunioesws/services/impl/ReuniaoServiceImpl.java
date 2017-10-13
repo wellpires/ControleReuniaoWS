@@ -1,31 +1,50 @@
 package br.com.everis.controlereunioesws.services.impl;
 
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.TypedQuery;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.everis.controlereunioesws.config.dao.JpaDao;
+import br.com.everis.controlereunioesws.dao.IReuniaoDAO;
 import br.com.everis.controlereunioesws.model.Reuniao;
 import br.com.everis.controlereunioesws.services.IReuniaoService;
 
-@Repository
-@Transactional
+@Service
 public class ReuniaoServiceImpl extends JpaDao<Integer, Reuniao> implements IReuniaoService {
 
+	@Autowired
+	private IReuniaoDAO reuniaoDAO = null;
+	
 	@Override
-	public void salvar(Reuniao reuniao) throws Exception {
-		entityManager.persist(reuniao);
+	public void salvarReuniao(Reuniao reuniao) throws Exception {
+		reuniaoDAO.salvarReuniao(reuniao);
+	}
+	
+	@Override
+	public void editarReuniao(Reuniao reuniao) throws Exception {
+		reuniaoDAO.editarReuniao(reuniao);
 	}
 
 	@Override
-	public List<Reuniao> buscarReunioes(Date dtHoje) throws Exception {
-		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("SELECT r FROM Reuniao r WHERE  r.dtInicio > :hoje", Reuniao.class);
-		reuniaoQuery.setParameter("hoje", dtHoje);
-		return reuniaoQuery.getResultList();
+	public void removerReuniao(Reuniao reuniao) throws Exception {
+		reuniaoDAO.removerReuniao(reuniao);
 	}
+	
+	@Override
+	public List<Reuniao> buscarReunioes(Reuniao reuniao) throws Exception {
+		return reuniaoDAO.buscarReunioes(reuniao);
+	}
+
+	@Override
+	public List<Reuniao> listarReunioes() throws Exception {
+		return reuniaoDAO.listarReunioes();
+	}
+
+	@Override
+	public Reuniao buscarReuniao(Reuniao reuniao) throws Exception {
+		return reuniaoDAO.buscarReuniao(reuniao);
+	}
+
 
 }

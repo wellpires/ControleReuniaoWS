@@ -1,7 +1,6 @@
 package br.com.everis.controlereunioesws;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,36 +31,108 @@ public class ControleReunioesWS {
 	@Autowired
 	private IReuniaoService reuniaoService = null;
 
-	@RequestMapping(value = "/gravarReuniao", method = RequestMethod.POST , consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8" , produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<?> gravarReuniao(@RequestBody String reuniao) throws Exception{
-		try{
+	@RequestMapping(value = "/gravarReuniao", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<?> gravarReuniao(@RequestBody String reuniao) throws Exception {
+		try {
 			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
 			Reuniao r = gson.fromJson(reuniao, Reuniao.class);
-			reuniaoService.salvar(r);
+			reuniaoService.salvarReuniao(r);
 			return ResponseEntity.ok().build();
-		} catch(ResponseException re){
+		} catch (ResponseException re) {
 			throw new ResponseException(re.getErrorMessage());
-		} catch(NullPointerException npe){
-			throw new NullPointerException(npe.getMessage());
-		}
-	}
-
-	@RequestMapping(value = "/buscarReunioes", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<String> buscarReunioes(@RequestParam(value = "data") String data) throws Exception{
-		try{
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
-			
-			Date dtHoje = ReuniaoUtils.stringToDateTime(data);
-			List<Reuniao> lstReunioes = reuniaoService.buscarReunioes(dtHoje);
-			String reuniaoJson = gson.toJson(lstReunioes);
-			return ResponseEntity.ok().body(reuniaoJson);
-		}catch(NullPointerException npe){
+		} catch (NullPointerException npe) {
 			throw new NullPointerException(npe.getMessage());
 		} catch (ParseException e) {
 			throw new ParseException(e.getMessage(), 0);
 		}
 	}
-	
+
+	@RequestMapping(value = "/editarReuniao/{idReuniao}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<?> editarReuniao(@PathVariable("idReuniao") String idReuniao, @RequestBody String reuniao)
+			throws Exception {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Reuniao r = gson.fromJson(reuniao, Reuniao.class);
+			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
+			reuniaoService.editarReuniao(r);
+			return ResponseEntity.ok().build();
+		} catch (ResponseException re) {
+			throw new ResponseException(re.getErrorMessage());
+		} catch (NullPointerException npe) {
+			throw new NullPointerException(npe.getMessage());
+		} catch (ParseException e) {
+			throw new ParseException(e.getMessage(), 0);
+		}
+	}
+
+	@RequestMapping(value = "/removerReuniao/{idReuniao}", method = RequestMethod.DELETE, consumes = "text/plain;charset=utf-8" , produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<?> removerReuniao(@PathVariable("idReuniao") String idReuniao) throws Exception {
+		try {
+			Reuniao r = new Reuniao();
+			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
+			reuniaoService.removerReuniao(r);
+			return ResponseEntity.ok().build();
+		} catch (ResponseException re) {
+			throw new ResponseException(re.getErrorMessage());
+		} catch (NullPointerException npe) {
+			throw new NullPointerException(npe.getMessage());
+		} catch (ParseException e) {
+			throw new ParseException(e.getMessage(), 0);
+		}
+	}
+
+	@RequestMapping(value = "/buscarReuniao", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" }, produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<String> buscarReuniao(@RequestParam("idReuniao") String idReuniao) throws Exception {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Reuniao r = new Reuniao();
+			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
+			r = reuniaoService.buscarReuniao(r);
+			return ResponseEntity.ok().body(gson.toJson(r));
+		} catch (ResponseException re) {
+			throw new ResponseException(re.getErrorMessage());
+		} catch (NullPointerException npe) {
+			throw new NullPointerException(npe.getMessage());
+		} catch (ParseException e) {
+			throw new ParseException(e.getMessage(), 0);
+		}
+
+	}
+
+	@RequestMapping(value = "/buscarReunioes", method = RequestMethod.GET, consumes = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" }, produces = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" })
+	public ResponseEntity<String> buscarReunioes(@RequestParam(value = "data") String data) throws Exception {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Reuniao reuniao = new Reuniao();
+			reuniao.setDtInicio(ReuniaoUtils.stringToDateTime(data));
+			List<Reuniao> lstReunioes = reuniaoService.buscarReunioes(reuniao);
+			String reuniaoJson = gson.toJson(lstReunioes);
+			return ResponseEntity.ok().body(reuniaoJson);
+		} catch (ResponseException re) {
+			throw new ResponseException(re.getErrorMessage());
+		} catch (NullPointerException npe) {
+			throw new NullPointerException(npe.getMessage());
+		} catch (ParseException e) {
+			throw new ParseException(e.getMessage(), 0);
+		}
+	}
+
+	@RequestMapping(value = "/listarReunioes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+	public ResponseEntity<String> listarReunioes() throws Exception {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			List<Reuniao> lstReunioes = reuniaoService.listarReunioes();
+			String reunioesJson = gson.toJson(lstReunioes);
+			return ResponseEntity.ok().body(reunioesJson);
+		} catch (ResponseException re) {
+			throw new ResponseException(re.getErrorMessage());
+		} catch (NullPointerException npe) {
+			throw new NullPointerException(npe.getMessage());
+		} catch (ParseException e) {
+			throw new ParseException(e.getMessage(), 0);
+		}
+	}
+
 	@ExceptionHandler(ResponseException.class)
 	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -76,5 +148,5 @@ public class ControleReunioesWS {
 		error.setMessage(npe.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
-	
+
 }
