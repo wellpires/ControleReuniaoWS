@@ -24,14 +24,17 @@ public class Usuario implements Serializable {
 	@Column(name = "id_usuario")
 	private Long idUsuario = null;
 
-	@Column(name = "usuario", nullable = false, length = 60)
+	@Column(name = "usuario", length = 60)
 	private String usuario = null;
 
-	@Column(name = "senha", nullable = false, length = 100)
+	@Column(name = "senha", length = 100)
 	private String senha = null;
 
 	@Column(name = "nome_completo", nullable = false, length = 100)
 	private String nomeCompleto = null;
+	
+	@Column(name = "email", nullable = false, length = 100)
+	private String email = null;
 
 	@ManyToOne
 	@JoinColumn(name = "id_cargo_FK")
@@ -79,6 +82,14 @@ public class Usuario implements Serializable {
 		this.nomeCompleto = nomeCompleto;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Cargo getCargo() {
 		return cargo;
 	}
@@ -99,8 +110,8 @@ public class Usuario implements Serializable {
 		return usuarioReuniao;
 	}
 
-	public void setUsuarioReuniao(List<ReuniaoUsuario> reuniaoUsuario) {
-		this.usuarioReuniao = reuniaoUsuario;
+	public void setUsuarioReuniao(List<ReuniaoUsuario> usuarioReuniao) {
+		this.usuarioReuniao = usuarioReuniao;
 	}
 
 	public List<UsuarioQualificacao> getUsuarioQualificacao() {
@@ -116,6 +127,7 @@ public class Usuario implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cargo == null) ? 0 : cargo.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
 		result = prime * result + ((nomeCompleto == null) ? 0 : nomeCompleto.hashCode());
 		result = prime * result + ((permissao == null) ? 0 : permissao.hashCode());
@@ -139,6 +151,11 @@ public class Usuario implements Serializable {
 			if (other.cargo != null)
 				return false;
 		} else if (!cargo.equals(other.cargo))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		if (idUsuario == null) {
 			if (other.idUsuario != null)
