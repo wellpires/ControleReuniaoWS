@@ -1,7 +1,9 @@
 package br.com.everis.controlereunioesws.services;
 
+import java.util.List;
+
 import br.com.everis.controlereunioesws.model.Permissao;
 
 public interface IPermissaoService {
-	void gravar(Permissao permissao);
+	List<Permissao> listarPermissoes() throws Exception;
 }

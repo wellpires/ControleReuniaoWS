@@ -26,6 +26,7 @@ import br.com.everis.controlereunioesws.utils.Constants;
 import br.com.everis.controlereunioesws.utils.ReuniaoUtils;
 
 @RestController
+@RequestMapping(value = "/reuniao/")
 public class ControleReunioesWS {
 
 	@Autowired

@@ -41,4 +41,5 @@ public class ReuniaoUtils {
 		}
 		return Primitives.wrap(clazz).cast(objDestino);
 	}
+	
 }
