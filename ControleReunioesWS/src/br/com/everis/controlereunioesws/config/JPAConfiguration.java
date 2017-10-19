@@ -45,6 +45,7 @@ public class JPAConfiguration {
 		props.setProperty("hibernate.cache.use_query_cache", "true");
 		props.setProperty("hibernate.cache.region.factory_class",
 				"org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
+		props.setProperty("hibernate.jdbc.batch_size", "20");
 //		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
 		factoryBean.setJpaProperties(props);

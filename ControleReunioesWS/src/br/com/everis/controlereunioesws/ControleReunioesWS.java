@@ -1,6 +1,7 @@
 package br.com.everis.controlereunioesws;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,16 @@ import com.google.gson.GsonBuilder;
 
 import br.com.everis.controlereunioesws.exception.ErrorResponse;
 import br.com.everis.controlereunioesws.exception.ResponseException;
+import br.com.everis.controlereunioesws.model.Arquivo;
 import br.com.everis.controlereunioesws.model.Reuniao;
+import br.com.everis.controlereunioesws.model.ReuniaoArquivoUsuario;
+import br.com.everis.controlereunioesws.model.ReuniaoUsuario;
+import br.com.everis.controlereunioesws.model.ReuniaoUsuarioPK;
+import br.com.everis.controlereunioesws.model.Usuario;
+import br.com.everis.controlereunioesws.services.IArquivoService;
 import br.com.everis.controlereunioesws.services.IReuniaoService;
+import br.com.everis.controlereunioesws.services.IReuniaoUsuarioService;
+import br.com.everis.controlereunioesws.services.IUsuarioService;
 import br.com.everis.controlereunioesws.utils.Constants;
 import br.com.everis.controlereunioesws.utils.ReuniaoUtils;
 
@@ -31,13 +40,50 @@ public class ControleReunioesWS {
 
 	@Autowired
 	private IReuniaoService reuniaoService = null;
+	
+	@Autowired
+	private IArquivoService arquivoService = null;
+	
+	@Autowired
+	private IUsuarioService servicoServico = null;
+	
+	@Autowired
+	private IReuniaoUsuarioService reunioesUsuarios = null;
 
 	@RequestMapping(value = "/gravarReuniao", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<?> gravarReuniao(@RequestBody String reuniao) throws Exception {
+	public ResponseEntity<?> gravarReuniao(@RequestBody String valores) throws Exception {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
-			Reuniao r = gson.fromJson(reuniao, Reuniao.class);
-			reuniaoService.salvarReuniao(r);
+			
+			ReuniaoArquivoUsuario rau = gson.fromJson(valores, ReuniaoArquivoUsuario.class);
+			List<Arquivo> listArquivos = rau.getListArquivos();
+			List<Usuario> listUsuarios = rau.getListUsuarios();
+			Reuniao reuniao = rau.getReuniao();
+
+			Reuniao reuniaoGravada = reuniaoService.salvarReuniao(reuniao);
+			for(Arquivo a : listArquivos){
+				a.setReunioes(reuniaoGravada);
+			}
+			
+			arquivoService.gravar(listArquivos);
+
+			List<Usuario> usuariosGravados = servicoServico.gravarUsuarios(listUsuarios);
+			
+			List<ReuniaoUsuario> lstReunioesUsuarios = new ArrayList<>();
+			for(Usuario u : usuariosGravados){
+				ReuniaoUsuarioPK ruPK = new ReuniaoUsuarioPK();
+				ruPK.setReuniao(reuniaoGravada);
+				ruPK.setUsuario(u);
+				
+				ReuniaoUsuario ru = new ReuniaoUsuario();
+				ru.setConfirmado("0");
+				ru.setPk(ruPK);
+				
+				lstReunioesUsuarios.add(ru);
+			}
+			// TESTAR ESSA BOSTA
+			reunioesUsuarios.gravar(lstReunioesUsuarios);
+			
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {
 			throw new ResponseException(re.getErrorMessage());
@@ -149,5 +195,5 @@ public class ControleReunioesWS {
 		error.setMessage(npe.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
-
+	
 }

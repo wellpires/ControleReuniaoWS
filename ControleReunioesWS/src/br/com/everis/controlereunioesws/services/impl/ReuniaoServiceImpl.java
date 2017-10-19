@@ -17,8 +17,8 @@ public class ReuniaoServiceImpl extends JpaDao<Integer, Reuniao> implements IReu
 	private IReuniaoDAO reuniaoDAO = null;
 	
 	@Override
-	public void salvarReuniao(Reuniao reuniao) throws Exception {
-		reuniaoDAO.salvarReuniao(reuniao);
+	public Reuniao salvarReuniao(Reuniao reuniao) throws Exception {
+		return reuniaoDAO.salvarReuniao(reuniao);
 	}
 	
 	@Override

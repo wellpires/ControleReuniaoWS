@@ -16,8 +16,9 @@ import br.com.everis.controlereunioesws.model.Reuniao;
 public class ReuniaoDAOImpl extends JpaDao<Integer, Reuniao> implements IReuniaoDAO {
 
 	@Override
-	public void salvarReuniao(Reuniao reuniao) throws Exception {
+	public Reuniao salvarReuniao(Reuniao reuniao) throws Exception {
 		entityManager.persist(reuniao);
+		return reuniao;
 	}
 
 	@Override

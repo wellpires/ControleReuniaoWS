@@ -5,6 +5,8 @@ import java.util.List;
 import br.com.everis.controlereunioesws.model.Permissao;
 
 public interface IPermissaoDAO {
-	List<Permissao> listarPermissoes() throws Exception;;
+	List<Permissao> listarPermissoes() throws Exception;
+
+	Permissao buscarPermissao(Long idPermissao);;
 
 }

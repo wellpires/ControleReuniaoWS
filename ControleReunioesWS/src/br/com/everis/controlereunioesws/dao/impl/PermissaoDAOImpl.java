@@ -21,4 +21,9 @@ public class PermissaoDAOImpl extends JpaDao<Integer, Permissao> implements IPer
 		return permissaoQuery.getResultList();
 	}
 
+	@Override
+	public Permissao buscarPermissao(Long idPermissao) {
+		return entityManager.find(Permissao.class, idPermissao);
+	}
+
 }

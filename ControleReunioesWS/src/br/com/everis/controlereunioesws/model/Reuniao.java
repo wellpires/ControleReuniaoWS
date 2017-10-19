@@ -2,12 +2,15 @@ package br.com.everis.controlereunioesws.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,8 +46,14 @@ public class Reuniao implements Serializable {
 	@Column(name = "pauta", nullable = false, length = 300)
 	private String pauta = null;
 	
-//	@OneToMany(mappedBy = "pk.reuniao", cascade = CascadeType.ALL)
-//	private List<ReuniaoUsuario> reuniaoUsuario;
+	@OneToMany(mappedBy = "pk.reuniao", cascade = CascadeType.ALL)
+	private List<ReuniaoUsuario> reuniaoUsuario;
+	
+	public Reuniao(Long idReuniao) {
+		this.idReuniao = idReuniao;
+	}
+	public Reuniao() {
+	}
 	
 	public Long getIdReuniao() {
 		return idReuniao;
@@ -102,13 +111,13 @@ public class Reuniao implements Serializable {
 		this.pauta = pauta;
 	}
 	
-//	public List<ReuniaoUsuario> getReuniaoUsuario() {
-//		return reuniaoUsuario;
-//	}
-//
-//	public void setReuniaoUsuario(List<ReuniaoUsuario> reuniaoUsuario) {
-//		this.reuniaoUsuario = reuniaoUsuario;
-//	}
+	public List<ReuniaoUsuario> getReuniaoUsuario() {
+		return reuniaoUsuario;
+	}
+
+	public void setReuniaoUsuario(List<ReuniaoUsuario> reuniaoUsuario) {
+		this.reuniaoUsuario = reuniaoUsuario;
+	}
 
 	@Override
 	public int hashCode() {
@@ -120,7 +129,7 @@ public class Reuniao implements Serializable {
 		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
 		result = prime * result + ((idReuniao == null) ? 0 : idReuniao.hashCode());
 		result = prime * result + ((pauta == null) ? 0 : pauta.hashCode());
-//		result = prime * result + ((reuniaoUsuario == null) ? 0 : reuniaoUsuario.hashCode());
+		result = prime * result + ((reuniaoUsuario == null) ? 0 : reuniaoUsuario.hashCode());
 		result = prime * result + ((sala == null) ? 0 : sala.hashCode());
 		return result;
 	}
@@ -164,11 +173,11 @@ public class Reuniao implements Serializable {
 				return false;
 		} else if (!pauta.equals(other.pauta))
 			return false;
-//		if (reuniaoUsuario == null) {
-//			if (other.reuniaoUsuario != null)
-//				return false;
-//		} else if (!reuniaoUsuario.equals(other.reuniaoUsuario))
-//			return false;
+		if (reuniaoUsuario == null) {
+			if (other.reuniaoUsuario != null)
+				return false;
+		} else if (!reuniaoUsuario.equals(other.reuniaoUsuario))
+			return false;
 		if (sala == null) {
 			if (other.sala != null)
 				return false;

@@ -21,4 +21,9 @@ public class CargoDAO extends JpaDao<Long, Cargo> implements ICargoDAO {
 		return cargoQuery.getResultList();
 	}
 
+	@Override
+	public Cargo buscarCargo(Long idCargo) throws Exception {
+		return entityManager.find(Cargo.class,idCargo);
+	}
+
 }
