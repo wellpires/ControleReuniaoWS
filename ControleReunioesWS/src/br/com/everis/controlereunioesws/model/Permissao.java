@@ -21,7 +21,7 @@ public class Permissao implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_permissao")
-	private Long idPermissao = null;
+	private Long idPermissao = 0L;
 
 	@Column(name = "permissao", nullable = false, length = 60)
 	private String permissao = null;

@@ -60,12 +60,12 @@ public class ControleReunioesWS {
 			List<Usuario> listUsuarios = rau.getListUsuarios();
 			Reuniao reuniao = rau.getReuniao();
 
-			Reuniao reuniaoGravada = reuniaoService.salvarReuniao(reuniao);
+			Reuniao reuniaoGravada = reuniaoService.gravarReuniao(reuniao);
 			for(Arquivo a : listArquivos){
 				a.setReunioes(reuniaoGravada);
 			}
 			
-			arquivoService.gravar(listArquivos);
+			arquivoService.gravarArquivos(listArquivos);
 
 			List<Usuario> usuariosGravados = servicoServico.gravarUsuarios(listUsuarios);
 			
@@ -81,8 +81,7 @@ public class ControleReunioesWS {
 				
 				lstReunioesUsuarios.add(ru);
 			}
-			// TESTAR ESSA BOSTA
-			reunioesUsuarios.gravar(lstReunioesUsuarios);
+			reunioesUsuarios.gravarReuniaoUsuarios(lstReunioesUsuarios);
 			
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {

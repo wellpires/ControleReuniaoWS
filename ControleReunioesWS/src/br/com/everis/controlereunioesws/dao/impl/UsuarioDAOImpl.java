@@ -18,7 +18,7 @@ public class UsuarioDAOImpl extends JpaDao<Long, Usuario> implements IUsuarioDAO
 
 		for (int i = 0; i < lstUsuario.size(); i++) {
 			Usuario usuario = lstUsuario.get(i);
-			entityManager.merge(usuario);
+			entityManager.persist(usuario);
 			if ((i % 20) == 0) {
 				entityManager.flush();
 				entityManager.clear();

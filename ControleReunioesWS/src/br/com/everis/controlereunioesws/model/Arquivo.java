@@ -22,9 +22,9 @@ public class Arquivo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_arquivo")
-	private Long idArquivo = null;
+	private Long idArquivo = 0L;
 	
-	@Column(name = "name", nullable = false, length = 150)
+	@Column(name = "arquivo", nullable = false, length = 400)
 	private String arquivo = null;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

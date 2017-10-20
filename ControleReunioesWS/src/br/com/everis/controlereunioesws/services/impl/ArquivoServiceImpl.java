@@ -16,8 +16,8 @@ public class ArquivoServiceImpl implements IArquivoService {
 	private IArquivoDAO arquivoDAO = null;
 	
 	@Override
-	public void gravar(List<Arquivo> lstArquivos) throws Exception {
-		arquivoDAO.gravar(lstArquivos);
+	public void gravarArquivos(List<Arquivo> lstArquivos) throws Exception {
+		arquivoDAO.gravarArquivos(lstArquivos);
 	}
 
 }

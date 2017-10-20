@@ -14,10 +14,10 @@ import br.com.everis.controlereunioesws.model.Arquivo;
 public class ArquivoDAOImpl extends JpaDao<Long, Arquivo>implements IArquivoDAO {
 
 	@Override
-	public void gravar(List<Arquivo> lstArquivos) {
-		for (int i = 0; i > lstArquivos.size(); i++) {
+	public void gravarArquivos(List<Arquivo> lstArquivos) {
+		for (int i = 0; i < lstArquivos.size(); i++) {
 			Arquivo arquivo = lstArquivos.get(i);
-			entityManager.persist(arquivo);
+			entityManager.merge(arquivo);
 			if((i % 20) == 0){
 				entityManager.flush();
 				entityManager.clear();

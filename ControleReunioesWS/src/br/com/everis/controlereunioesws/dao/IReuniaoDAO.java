@@ -6,7 +6,7 @@ import br.com.everis.controlereunioesws.model.Reuniao;
 
 public interface IReuniaoDAO  {
 	
-	Reuniao salvarReuniao(Reuniao reuniao) throws Exception;
+	Reuniao gravarReuniao(Reuniao reuniao) throws Exception;
 
 	void editarReuniao(Reuniao reuniao) throws Exception;
 	

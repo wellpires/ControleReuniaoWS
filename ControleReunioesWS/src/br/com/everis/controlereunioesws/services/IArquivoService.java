@@ -6,6 +6,6 @@ import br.com.everis.controlereunioesws.model.Arquivo;
 
 public interface IArquivoService {
 	
-	void gravar(List<Arquivo> lstArquivos) throws Exception;
+	void gravarArquivos(List<Arquivo> lstArquivos) throws Exception;
 
 }

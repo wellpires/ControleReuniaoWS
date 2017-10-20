@@ -16,8 +16,8 @@ public class ReuniaoUsuarioService implements IReuniaoUsuarioService {
 	private IReunioesUsuariosDAO reunioesUsuarioDAO = null;
 	
 	@Override
-	public void gravar(List<ReuniaoUsuario> reunioesUsuarios) throws Exception {
-		reunioesUsuarioDAO.gravar(reunioesUsuarios);
+	public void gravarReuniaoUsuarios(List<ReuniaoUsuario> reunioesUsuarios) throws Exception {
+		reunioesUsuarioDAO.gravarReuniaoUsuarios(reunioesUsuarios);
 	}
 
 }

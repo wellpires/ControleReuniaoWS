@@ -5,6 +5,6 @@ import java.util.List;
 import br.com.everis.controlereunioesws.model.ReuniaoUsuario;
 
 public interface IReunioesUsuariosDAO {
-	void gravar(List<ReuniaoUsuario> reunioesUsuarios);
+	void gravarReuniaoUsuarios(List<ReuniaoUsuario> reunioesUsuarios);
 
 }

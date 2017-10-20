@@ -22,7 +22,7 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_usuario")
-	private Long idUsuario = null;
+	private Long idUsuario = 0L;
 
 	@Column(name = "usuario", length = 60)
 	private String usuario = null;

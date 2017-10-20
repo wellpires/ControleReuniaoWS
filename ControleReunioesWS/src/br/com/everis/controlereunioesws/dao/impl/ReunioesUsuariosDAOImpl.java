@@ -14,8 +14,8 @@ import br.com.everis.controlereunioesws.model.ReuniaoUsuario;
 public class ReunioesUsuariosDAOImpl extends JpaDao<Long, ReuniaoUsuario> implements IReunioesUsuariosDAO {
 
 	@Override
-	public void gravar(List<ReuniaoUsuario> reunioesUsuarios) {
-		for (int i = 0; i > reunioesUsuarios.size(); i++) {
+	public void gravarReuniaoUsuarios(List<ReuniaoUsuario> reunioesUsuarios) {
+		for (int i = 0; i < reunioesUsuarios.size(); i++) {
 			ReuniaoUsuario arquivo = reunioesUsuarios.get(i);
 			entityManager.persist(arquivo);
 			if((i % 20) == 0){

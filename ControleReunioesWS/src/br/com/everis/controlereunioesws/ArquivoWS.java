@@ -35,7 +35,7 @@ public class ArquivoWS {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
 			List<Arquivo> lstArquivos = gson.fromJson(arquivoJson, new TypeToken<List<Arquivo>>(){}.getType());
-			arquivoService.gravar(lstArquivos);
+			arquivoService.gravarArquivos(lstArquivos);
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {
 			throw new ResponseException(re.getErrorMessage());

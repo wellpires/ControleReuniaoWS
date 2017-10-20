@@ -18,7 +18,7 @@ public class Cargo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cargo")
-	private Long idCargo = null;
+	private Long idCargo = 0L;
 	
 	@Column(name = "cargo", nullable = false, length = 60)
 	private String cargo = null;

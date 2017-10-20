@@ -21,7 +21,7 @@ public class Qualificacao implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_qualificacao")
-	private Long idQualificacao = null;
+	private Long idQualificacao = 0L;
 
 	@Column(name = "qualificacao", nullable = false, length = 80)
 	private String qualificacao = null;
