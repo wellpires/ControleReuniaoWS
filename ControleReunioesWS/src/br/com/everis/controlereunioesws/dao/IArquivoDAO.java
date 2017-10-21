@@ -8,4 +8,6 @@ public interface IArquivoDAO {
 
 	void gravarArquivos(List<Arquivo> lstArquivos);
 	
+	void removerReuniao(Arquivo arquivo);
+	
 }

@@ -2,6 +2,10 @@ package br.com.everis.controlereunioesws.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,5 +27,14 @@ public class ArquivoDAOImpl extends JpaDao<Long, Arquivo>implements IArquivoDAO 
 				entityManager.clear();
 			}
 		}
+	}
+
+	@Override
+	public void removerReuniao(Arquivo arquivo) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaDelete<Arquivo> reuniaoCriteria = builder.createCriteriaDelete(Arquivo.class);
+		Root<Arquivo> arquivoRoot = reuniaoCriteria.from(Arquivo.class);
+		reuniaoCriteria.where(builder.equal(arquivoRoot.get("reuniao"), arquivo.getReunioes().getIdReuniao()));
+		entityManager.createQuery(reuniaoCriteria).executeUpdate();
 	}
 }

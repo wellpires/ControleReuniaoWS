@@ -20,4 +20,9 @@ public class ArquivoServiceImpl implements IArquivoService {
 		arquivoDAO.gravarArquivos(lstArquivos);
 	}
 
+	@Override
+	public void removerReuniao(Arquivo arquivo) throws Exception {
+		arquivoDAO.removerReuniao(arquivo);
+	}
+
 }

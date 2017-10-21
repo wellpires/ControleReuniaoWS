@@ -1,5 +1,6 @@
 package br.com.everis.controlereunioesws;
 
+import java.sql.BatchUpdateException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import br.com.everis.controlereunioesws.exception.ErrorResponse;
 import br.com.everis.controlereunioesws.exception.ResponseException;
@@ -116,6 +118,11 @@ public class ControleReunioesWS {
 		try {
 			Reuniao r = new Reuniao();
 			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
+			
+//			Arquivo arquivo = new Arquivo();
+//			arquivo.setReunioes(r);
+//			arquivoService.removerReuniao(arquivo);
+			
 			reuniaoService.removerReuniao(r);
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {
@@ -124,6 +131,10 @@ public class ControleReunioesWS {
 			throw new NullPointerException(npe.getMessage());
 		} catch (ParseException e) {
 			throw new ParseException(e.getMessage(), 0);
+		}catch(BatchUpdateException bue){
+			throw new BatchUpdateException(bue);
+		}catch(Exception e){
+			throw new Exception(e);
 		}
 	}
 
@@ -148,11 +159,11 @@ public class ControleReunioesWS {
 	@RequestMapping(value = "/buscarReunioes", method = RequestMethod.GET, consumes = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" }, produces = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" })
 	public ResponseEntity<String> buscarReunioes(@RequestParam(value = "data") String data) throws Exception {
 		try {
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).excludeFieldsWithoutExposeAnnotation().create();
 			Reuniao reuniao = new Reuniao();
 			reuniao.setDtInicio(ReuniaoUtils.stringToDateTime(data));
 			List<Reuniao> lstReunioes = reuniaoService.buscarReunioes(reuniao);
-			String reuniaoJson = gson.toJson(lstReunioes);
+			String reuniaoJson = gson.toJson(lstReunioes, new TypeToken<List<Reuniao>>(){}.getType());
 			return ResponseEntity.ok().body(reuniaoJson);
 		} catch (ResponseException re) {
 			throw new ResponseException(re.getErrorMessage());
@@ -166,7 +177,7 @@ public class ControleReunioesWS {
 	@RequestMapping(value = "/listarReunioes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
 	public ResponseEntity<String> listarReunioes() throws Exception {
 		try {
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).excludeFieldsWithoutExposeAnnotation().create();
 			List<Reuniao> lstReunioes = reuniaoService.listarReunioes();
 			String reunioesJson = gson.toJson(lstReunioes);
 			return ResponseEntity.ok().body(reunioesJson);
@@ -181,18 +192,23 @@ public class ControleReunioesWS {
 
 	@ExceptionHandler(ResponseException.class)
 	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
-		ErrorResponse error = new ErrorResponse();
-		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
-		error.setMessage(ex.getMessage());
-		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+		return responseError(ex);
 	}
 
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<ErrorResponse> nullPointerException(NullPointerException npe) {
-		ErrorResponse error = new ErrorResponse();
-		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
-		error.setMessage(npe.getMessage());
-		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+		return responseError(npe);
 	}
 	
+	@ExceptionHandler(ParseException.class)
+	public ResponseEntity<ErrorResponse> parseException(ParseException e){
+		return responseError(e);
+	}
+
+	private ResponseEntity<ErrorResponse> responseError(Exception e) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
+		error.setMessage(e.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+	}
 }

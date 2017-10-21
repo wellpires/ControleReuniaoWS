@@ -25,30 +25,31 @@ public class ReuniaoDAOImpl extends JpaDao<Integer, Reuniao> implements IReuniao
 	public void editarReuniao(Reuniao reuniao) throws Exception {
 		entityManager.merge(reuniao);
 	}
-	
+
 	@Override
 	public void removerReuniao(Reuniao reuniao) throws Exception {
 		Reuniao r = buscarReuniao(reuniao);
 		entityManager.remove(r);
 	}
-	
+
 	@Override
 	public Reuniao buscarReuniao(Reuniao reuniao) throws Exception {
 		return entityManager.find(Reuniao.class, reuniao.getIdReuniao());
 	}
-	
+
 	@Override
 	public List<Reuniao> buscarReunioes(Reuniao reuniao) throws Exception {
-		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("SELECT r FROM Reuniao r WHERE  r.dtInicio > :hoje ORDER BY r.dtInicio ASC", Reuniao.class);
+		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery(
+				"SELECT r FROM Reuniao r WHERE  r.dtInicio > :hoje ORDER BY r.dtInicio ASC", Reuniao.class);
 		reuniaoQuery.setParameter("hoje", reuniao.getDtInicio());
 		return reuniaoQuery.getResultList();
 	}
 
 	@Override
 	public List<Reuniao> listarReunioes() throws Exception {
-		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("FROM Reuniao r ORDER BY r.dtInicio ASC", Reuniao.class);
+		TypedQuery<Reuniao> reuniaoQuery = entityManager.createQuery("FROM Reuniao r ORDER BY r.dtInicio ASC",
+				Reuniao.class);
 		return reuniaoQuery.getResultList();
 	}
-
 
 }

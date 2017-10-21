@@ -44,8 +44,8 @@ public class Usuario implements Serializable {
 	@JoinColumn(name = "id_permissao_FK")
 	private Permissao permissao = null;
 
-//	@OneToMany(mappedBy = "pk.usuario", cascade = CascadeType.ALL)
-//	private List<ReuniaoUsuario> usuarioReuniao = null;
+	@OneToMany(mappedBy = "pk.usuario", cascade = CascadeType.ALL)
+	private List<ReuniaoUsuario> usuarioReuniao = null;
 
 	@OneToMany(mappedBy = "pk.usuario", cascade = CascadeType.ALL)
 	private List<UsuarioQualificacao> usuarioQualificacao = null;
@@ -106,13 +106,13 @@ public class Usuario implements Serializable {
 		this.permissao = permissao;
 	}
 
-//	public List<ReuniaoUsuario> getUsuarioReuniao() {
-//		return usuarioReuniao;
-//	}
-//
-//	public void setUsuarioReuniao(List<ReuniaoUsuario> usuarioReuniao) {
-//		this.usuarioReuniao = usuarioReuniao;
-//	}
+	public List<ReuniaoUsuario> getUsuarioReuniao() {
+		return usuarioReuniao;
+	}
+
+	public void setUsuarioReuniao(List<ReuniaoUsuario> usuarioReuniao) {
+		this.usuarioReuniao = usuarioReuniao;
+	}
 
 	public List<UsuarioQualificacao> getUsuarioQualificacao() {
 		return usuarioQualificacao;
@@ -134,7 +134,7 @@ public class Usuario implements Serializable {
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		result = prime * result + ((usuarioQualificacao == null) ? 0 : usuarioQualificacao.hashCode());
-//		result = prime * result + ((usuarioReuniao == null) ? 0 : usuarioReuniao.hashCode());
+		result = prime * result + ((usuarioReuniao == null) ? 0 : usuarioReuniao.hashCode());
 		return result;
 	}
 
@@ -187,11 +187,11 @@ public class Usuario implements Serializable {
 				return false;
 		} else if (!usuarioQualificacao.equals(other.usuarioQualificacao))
 			return false;
-//		if (usuarioReuniao == null) {
-//			if (other.usuarioReuniao != null)
-//				return false;
-//		} else if (!usuarioReuniao.equals(other.usuarioReuniao))
-//			return false;
+		if (usuarioReuniao == null) {
+			if (other.usuarioReuniao != null)
+				return false;
+		} else if (!usuarioReuniao.equals(other.usuarioReuniao))
+			return false;
 		return true;
 	}
 
