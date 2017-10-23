@@ -47,7 +47,7 @@ public class JPAConfiguration {
 				"org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
 		props.setProperty("hibernate.jdbc.batch_size", "20");
 		props.setProperty("hibernate.enable_lazy_load_no_trans", "true");
-		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+//		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
 		factoryBean.setJpaProperties(props);
 		factoryBean.setPackagesToScan(Reuniao.class.getPackage().getName());

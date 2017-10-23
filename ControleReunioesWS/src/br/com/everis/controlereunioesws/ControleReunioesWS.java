@@ -83,7 +83,7 @@ public class ControleReunioesWS {
 				
 				lstReunioesUsuarios.add(ru);
 			}
-			reunioesUsuarios.gravarReuniaoUsuarios(lstReunioesUsuarios);
+			reunioesUsuarios.gravarReuniaoUsuario(lstReunioesUsuarios);
 			
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {
@@ -119,10 +119,6 @@ public class ControleReunioesWS {
 			Reuniao r = new Reuniao();
 			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
 			
-//			Arquivo arquivo = new Arquivo();
-//			arquivo.setReunioes(r);
-//			arquivoService.removerReuniao(arquivo);
-			
 			reuniaoService.removerReuniao(r);
 			return ResponseEntity.ok().build();
 		} catch (ResponseException re) {
@@ -141,7 +137,7 @@ public class ControleReunioesWS {
 	@RequestMapping(value = "/buscarReuniao", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" }, produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
 	public ResponseEntity<String> buscarReuniao(@RequestParam("idReuniao") String idReuniao) throws Exception {
 		try {
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).excludeFieldsWithoutExposeAnnotation().create();
 			Reuniao r = new Reuniao();
 			r.setIdReuniao(ReuniaoUtils.stringToLong(idReuniao));
 			r = reuniaoService.buscarReuniao(r);

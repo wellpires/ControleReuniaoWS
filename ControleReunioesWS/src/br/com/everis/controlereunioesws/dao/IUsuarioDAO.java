@@ -8,4 +8,10 @@ public interface IUsuarioDAO {
 	
 	List<Usuario> gravarUsuarios(List<Usuario> lstUsuario);
 	
+	void gravarUsuario(Usuario usuario);
+	
+	Usuario buscarUsuario(Usuario usuario);
+	
+	Object[] buscarDadosUsuario(Usuario usuario);
+	
 }
