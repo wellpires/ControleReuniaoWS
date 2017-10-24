@@ -16,17 +16,23 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	private IUsuarioDAO usuarioDAO = null;
 	
 	@Override
-	public List<Usuario> gravarUsuarios(List<Usuario> usuarios) {
+	public List<Usuario> gravarUsuarios(List<Usuario> usuarios) throws Exception {
 		return usuarioDAO.gravarUsuarios(usuarios);
 	}
 
 	@Override
-	public Object[] buscarDadosUsuario(Usuario usuario) {
+	public Object[] buscarDadosUsuario(Usuario usuario) throws Exception {
 		return usuarioDAO.buscarDadosUsuario(usuario);
 	}
 
 	@Override
-	public void gravarUsuario(Usuario usuario) {
+	public void gravarUsuario(Usuario usuario) throws Exception {
 		usuarioDAO.gravarUsuario(usuario);
 	}
+
+	@Override
+	public List<Usuario> buscarUsuarios(Usuario usuario) throws Exception {
+		return usuarioDAO.buscarUsuarios(usuario);
+	}
+
 }

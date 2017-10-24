@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.everis.controlereunioesws.dao.IReuniaoUsuarioDAO;
 import br.com.everis.controlereunioesws.model.ReuniaoUsuario;
+import br.com.everis.controlereunioesws.model.Usuario;
 import br.com.everis.controlereunioesws.services.IReuniaoUsuarioService;
 
 @Service
@@ -23,6 +24,11 @@ public class ReuniaoUsuarioServiceImpl implements IReuniaoUsuarioService {
 	@Override
 	public void confirmarReuniao(ReuniaoUsuario reuniaoUsuario) throws Exception {
 		reuniaoUsuarioDAO.confirmarReuniao(reuniaoUsuario);
+	}
+
+	@Override
+	public List<Usuario> buscarUsuarios(ReuniaoUsuario reuniaoUsuario) throws Exception {
+		return reuniaoUsuarioDAO.buscarUsuarios(reuniaoUsuario);
 	}
 
 }

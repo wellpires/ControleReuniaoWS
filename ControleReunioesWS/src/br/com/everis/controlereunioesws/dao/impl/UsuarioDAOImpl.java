@@ -2,6 +2,7 @@ package br.com.everis.controlereunioesws.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaUpdate;
@@ -19,7 +20,7 @@ import br.com.everis.controlereunioesws.model.Usuario;
 public class UsuarioDAOImpl extends JpaDao<Long, Usuario> implements IUsuarioDAO {
 
 	@Override
-	public List<Usuario> gravarUsuarios(List<Usuario> lstUsuario) {
+	public List<Usuario> gravarUsuarios(List<Usuario> lstUsuario) throws Exception {
 
 		for (int i = 0; i < lstUsuario.size(); i++) {
 			Usuario usuario = lstUsuario.get(i);
@@ -33,16 +34,20 @@ public class UsuarioDAOImpl extends JpaDao<Long, Usuario> implements IUsuarioDAO
 	}
 	
 	@Override
-	public Object[] buscarDadosUsuario(Usuario usuario) {
-		TypedQuery<Object[]> query = entityManager.createQuery("SELECT u,r FROM Usuario u, Reuniao r INNER JOIN FETCH u.usuarioReuniao ru WHERE u.idUsuario = :idUsuario", Object[].class);
-		query.setParameter("idUsuario", usuario.getIdUsuario());
-		return query.getSingleResult();
+	public Object[] buscarDadosUsuario(Usuario usuario) throws Exception{
+		try{
+			TypedQuery<Object[]> query = entityManager.createQuery("SELECT u,r FROM Usuario u, Reuniao r INNER JOIN FETCH u.usuarioReuniao ru WHERE u.idUsuario = :idUsuario", Object[].class);
+			query.setParameter("idUsuario", usuario.getIdUsuario());
+			return query.getSingleResult();
+		}catch (NoResultException nre){
+			return null;
+		}
 	}
 
 	@Override
-	public void gravarUsuario(Usuario usuario) {
+	public void gravarUsuario(Usuario usuario) throws Exception{
 		
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();;
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaUpdate<Usuario> criteria = builder.createCriteriaUpdate(Usuario.class);
 		Root<Usuario> root = criteria.from(Usuario.class);
 		criteria.set(root.get("usuario"), usuario.getUsuario());
@@ -53,8 +58,8 @@ public class UsuarioDAOImpl extends JpaDao<Long, Usuario> implements IUsuarioDAO
 	}
 
 	@Override
-	public Usuario buscarUsuario(Usuario usuario) {
-		return entityManager.find(Usuario.class, usuario.getIdUsuario());
+	public List<Usuario> buscarUsuarios(Usuario usuario) throws Exception {
+		return null;
 	}
 
 }

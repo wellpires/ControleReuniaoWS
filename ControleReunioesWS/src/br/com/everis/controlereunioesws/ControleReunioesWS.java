@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import br.com.everis.controlereunioesws.exception.ErrorResponse;
@@ -53,7 +54,7 @@ public class ControleReunioesWS {
 	private IReuniaoUsuarioService reunioesUsuarios = null;
 
 	@RequestMapping(value = "/gravarReuniao", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<?> gravarReuniao(@RequestBody String valores) throws Exception {
+	public ResponseEntity<String> gravarReuniao(@RequestBody String valores) throws Exception {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
 			
@@ -85,7 +86,18 @@ public class ControleReunioesWS {
 			}
 			reunioesUsuarios.gravarReuniaoUsuario(lstReunioesUsuarios);
 			
-			return ResponseEntity.ok().build();
+			
+			ReuniaoUsuario ru = new ReuniaoUsuario();
+			ru.getPk().setReuniao(reuniaoGravada);
+			
+			List<Usuario> listUsuariosReuniao = reunioesUsuarios.buscarUsuarios(ru);
+			String usuariosJson = gson.toJson(new JsonArray());
+			if(listUsuariosReuniao.size() == 0){
+				usuariosJson =  gson.toJson(new JsonArray());
+			}
+			
+			
+			return ResponseEntity.ok().body(usuariosJson);
 		} catch (ResponseException re) {
 			throw new ResponseException(re.getErrorMessage());
 		} catch (NullPointerException npe) {

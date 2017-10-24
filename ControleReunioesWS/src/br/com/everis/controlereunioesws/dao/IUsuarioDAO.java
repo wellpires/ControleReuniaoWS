@@ -6,12 +6,12 @@ import br.com.everis.controlereunioesws.model.Usuario;
 
 public interface IUsuarioDAO {
 	
-	List<Usuario> gravarUsuarios(List<Usuario> lstUsuario);
+	List<Usuario> gravarUsuarios(List<Usuario> lstUsuario) throws Exception;
 	
-	void gravarUsuario(Usuario usuario);
+	void gravarUsuario(Usuario usuario) throws Exception;
 	
-	Usuario buscarUsuario(Usuario usuario);
+	List<Usuario> buscarUsuarios(Usuario usuario) throws Exception;
 	
-	Object[] buscarDadosUsuario(Usuario usuario);
+	Object[] buscarDadosUsuario(Usuario usuario) throws Exception;
 	
 }

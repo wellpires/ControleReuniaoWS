@@ -35,66 +35,72 @@ public class UsuarioWS {
 
 	@Autowired
 	private IUsuarioService usuarioService = null;
-	
+
 	@Autowired
-	private IReuniaoUsuarioService reuniaoUsuarioService = null; 
+	private IReuniaoUsuarioService reuniaoUsuarioService = null;
 
 	@RequestMapping(value = "/gravarUsuario/{idUsuario}/{idReuniao}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
-	public ResponseEntity<?> gravarUsuario(@PathVariable("idUsuario") long idUsuario, @PathVariable("idReuniao") long idReuniao, @RequestBody String dados) throws Exception {
+	public ResponseEntity<?> gravarUsuario(@PathVariable("idUsuario") long idUsuario,
+			@PathVariable("idReuniao") long idReuniao, @RequestBody String dados) throws Exception {
 		try {
 			JsonObject dadosJsonObject = new JsonParser().parse(dados).getAsJsonObject();
 			String confirmacao = dadosJsonObject.get("confirmacao").getAsString();
 			Usuario usuario = (Usuario) new Gson().fromJson(dadosJsonObject.get("usuario"), Usuario.class);
-			
+
 			usuarioService.gravarUsuario(usuario);
-			
+
 			Reuniao reuniao = new Reuniao();
 			reuniao.setIdReuniao(idReuniao);
-			
+
 			ReuniaoUsuario reuniaoUsuario = new ReuniaoUsuario();
 			reuniaoUsuario.setConfirmado(confirmacao);
 			reuniaoUsuario.getPk().setUsuario(usuario);
 			reuniaoUsuario.getPk().setReuniao(reuniao);
-			
+
 			reuniaoUsuarioService.confirmarReuniao(reuniaoUsuario);
-			
+
 			return ResponseEntity.ok().build();
 		} catch (NullPointerException npe) {
 			throw new ResponseException(npe.getMessage());
 		}
 	}
 
-	@RequestMapping(value = "/buscarDadosUsuario", method = RequestMethod.GET, consumes = "text/plain;charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE+ ";charset=utf-8")
+	@RequestMapping(value = "/buscarDadosUsuario", method = RequestMethod.GET, consumes = "text/plain;charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
 	public ResponseEntity<String> buscarDadosUsuario(@RequestParam("idUsuario") long idUsuario) throws Exception {
 		try {
 			Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
 				@Override
 				public boolean shouldSkipField(FieldAttributes pfa) {
-					if("java.util.List<br.com.everis.controlereunioesws.model.ReuniaoUsuario>".equals(pfa.getDeclaredType().getTypeName())){
+					if ("java.util.List<br.com.everis.controlereunioesws.model.ReuniaoUsuario>"
+							.equals(pfa.getDeclaredType().getTypeName())) {
 						return true;
-					} else if("java.util.List<br.com.everis.controlereunioesws.model.UsuarioQualificacao>".equals(pfa.getDeclaredType().getTypeName())){
+					} else if ("java.util.List<br.com.everis.controlereunioesws.model.UsuarioQualificacao>"
+							.equals(pfa.getDeclaredType().getTypeName())) {
 						return true;
 					}
 					return false;
 				}
-				
+
 				@Override
 				public boolean shouldSkipClass(Class<?> paramClass) {
 					return false;
 				}
 			}).create();
-			
+
 			Usuario usuario = new Usuario();
 			usuario.setIdUsuario(idUsuario);
 			Object[] objectRetornado = usuarioService.buscarDadosUsuario(usuario);
-			
-			JsonArray jsonArray = new JsonArray();
-			JsonElement usuarioElement = new JsonParser().parse(gson.toJson(objectRetornado[0]));
-			JsonElement reuniaoElement = new JsonParser().parse(gson.toJson(objectRetornado[1]));
-			jsonArray.add(usuarioElement);
-			jsonArray.add(reuniaoElement);
-			
-			String usuarioJson = gson.toJson(objectRetornado);
+			String usuarioJson = gson.toJson(new JsonArray());
+
+			if (objectRetornado != null) {
+				JsonArray jsonArray = new JsonArray();
+				JsonElement usuarioElement = new JsonParser().parse(gson.toJson(objectRetornado[0]));
+				JsonElement reuniaoElement = new JsonParser().parse(gson.toJson(objectRetornado[1]));
+				jsonArray.add(usuarioElement);
+				jsonArray.add(reuniaoElement);
+
+				usuarioJson = gson.toJson(objectRetornado);
+			}
 
 			return ResponseEntity.ok().body(usuarioJson);
 		} catch (NullPointerException npe) {
@@ -117,6 +123,14 @@ public class UsuarioWS {
 		ErrorResponse error = new ErrorResponse();
 		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
 		error.setMessage(npe.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> exception(Exception e) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
+		error.setMessage(e.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
 
