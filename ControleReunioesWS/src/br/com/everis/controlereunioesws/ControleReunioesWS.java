@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -56,7 +58,25 @@ public class ControleReunioesWS {
 	@RequestMapping(value = "/gravarReuniao", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", produces = MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
 	public ResponseEntity<String> gravarReuniao(@RequestBody String valores) throws Exception {
 		try {
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).create();
+			Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
+				@Override
+				public boolean shouldSkipField(FieldAttributes pfa) {
+					if ("java.util.List<br.com.everis.controlereunioesws.model.ReuniaoUsuario>"
+							.equals(pfa.getDeclaredType().getTypeName())) {
+						return true;
+					} else if ("java.util.List<br.com.everis.controlereunioesws.model.UsuarioQualificacao>"
+							.equals(pfa.getDeclaredType().getTypeName())) {
+						return true;
+					}
+					return false;
+				}
+
+				@Override
+				public boolean shouldSkipClass(Class<?> paramClass) {
+					return false;
+				}
+			}).setDateFormat(Constants.DATETIME_PATTERN).create();
+			
 			
 			ReuniaoArquivoUsuario rau = gson.fromJson(valores, ReuniaoArquivoUsuario.class);
 			List<Arquivo> listArquivos = rau.getListArquivos();
@@ -92,8 +112,8 @@ public class ControleReunioesWS {
 			
 			List<Usuario> listUsuariosReuniao = reunioesUsuarios.buscarUsuarios(ru);
 			String usuariosJson = gson.toJson(new JsonArray());
-			if(listUsuariosReuniao.size() == 0){
-				usuariosJson =  gson.toJson(new JsonArray());
+			if(listUsuariosReuniao.size() > 0){
+				usuariosJson =  gson.toJson(listUsuariosReuniao);
 			}
 			
 			
@@ -219,4 +239,5 @@ public class ControleReunioesWS {
 		error.setMessage(e.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
+	
 }

@@ -99,7 +99,7 @@ public class UsuarioWS {
 				jsonArray.add(usuarioElement);
 				jsonArray.add(reuniaoElement);
 
-				usuarioJson = gson.toJson(objectRetornado);
+				usuarioJson = gson.toJson(jsonArray);
 			}
 
 			return ResponseEntity.ok().body(usuarioJson);
