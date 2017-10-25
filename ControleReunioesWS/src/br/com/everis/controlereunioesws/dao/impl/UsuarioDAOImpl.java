@@ -36,8 +36,8 @@ public class UsuarioDAOImpl extends JpaDao<Long, Usuario> implements IUsuarioDAO
 	@Override
 	public Object[] buscarDadosUsuario(Usuario usuario) throws Exception{
 		try{
-			TypedQuery<Object[]> query = entityManager.createQuery("SELECT u,r FROM Usuario u, Reuniao r INNER JOIN FETCH u.usuarioReuniao ru WHERE u.idUsuario = :idUsuario", Object[].class);
-			query.setParameter("idUsuario", usuario.getIdUsuario());
+			TypedQuery<Object[]> query = entityManager.createQuery("SELECT u, r FROM Usuario u INNER JOIN u.usuarioReuniao ru INNER JOIN ru.pk.reuniao r WHERE u.idUsuario = :idUsuario", Object[].class);
+			query.setParameter("idUsuario", usuario.getIdUsuario()).getSingleResult();
 			return query.getSingleResult();
 		}catch (NoResultException nre){
 			return null;
