@@ -43,9 +43,17 @@ public class Reuniao implements Serializable {
 	@Expose
 	private Date dtTermino = null;
 
-	@Column(name = "endereco", nullable = false, length = 150)
+//	@Column(name = "endereco", nullable = false, length = 150)
+//	@Expose
+//	private String endereco = null;
+
+	@Column(name = "latitude", nullable = false, precision = 9, scale = 7)
 	@Expose
-	private String endereco = null;
+	private Double latitude = null;
+	
+	@Column(name = "longitude", nullable = false, precision = 10, scale = 7)
+	@Expose
+	private Double longitude = null; 
 
 	@Column(name = "sala", nullable = false, length = 60)
 	@Expose
@@ -76,7 +84,7 @@ public class Reuniao implements Serializable {
 		this.assunto = assunto;
 		this.dtInicio = dtInicio;
 		this.dtTermino = dtTermino;
-		this.endereco = endereco;
+//		this.endereco = endereco;
 		this.sala = sala;
 		this.pauta = pauta;
 	}
@@ -113,12 +121,28 @@ public class Reuniao implements Serializable {
 		this.dtTermino = dtTermino;
 	}
 
-	public String getEndereco() {
-		return endereco;
+//	public String getEndereco() {
+//		return endereco;
+//	}
+//
+//	public void setEndereco(String endereco) {
+//		this.endereco = endereco;
+//	}
+
+	public Double getLatitude() {
+		return latitude;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getSala() {
@@ -160,7 +184,7 @@ public class Reuniao implements Serializable {
 		result = prime * result + ((assunto == null) ? 0 : assunto.hashCode());
 		result = prime * result + ((dtInicio == null) ? 0 : dtInicio.hashCode());
 		result = prime * result + ((dtTermino == null) ? 0 : dtTermino.hashCode());
-		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
+//		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
 		result = prime * result + ((idReuniao == null) ? 0 : idReuniao.hashCode());
 		result = prime * result + ((pauta == null) ? 0 : pauta.hashCode());
 		result = prime * result + ((reuniaoUsuario == null) ? 0 : reuniaoUsuario.hashCode());
@@ -198,11 +222,11 @@ public class Reuniao implements Serializable {
 				return false;
 		} else if (!dtTermino.equals(other.dtTermino))
 			return false;
-		if (endereco == null) {
-			if (other.endereco != null)
-				return false;
-		} else if (!endereco.equals(other.endereco))
-			return false;
+//		if (endereco == null) {
+//			if (other.endereco != null)
+//				return false;
+//		} else if (!endereco.equals(other.endereco))
+//			return false;
 		if (idReuniao == null) {
 			if (other.idReuniao != null)
 				return false;

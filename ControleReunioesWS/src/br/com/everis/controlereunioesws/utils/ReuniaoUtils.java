@@ -5,13 +5,14 @@ import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.google.gson.internal.Primitives;
 
 public class ReuniaoUtils {
 
 	public static Date stringToDateTime(String data) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATETIME_PATTERN, Locale.US);
 		return new Date(sdf.parse(data).getTime());
 	}
 

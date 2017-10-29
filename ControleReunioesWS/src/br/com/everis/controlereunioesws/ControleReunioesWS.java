@@ -3,6 +3,7 @@ package br.com.everis.controlereunioesws;
 import java.sql.BatchUpdateException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
+import br.com.everis.controlereunioesws.converter.DateConverter;
 import br.com.everis.controlereunioesws.exception.ErrorResponse;
 import br.com.everis.controlereunioesws.exception.ResponseException;
 import br.com.everis.controlereunioesws.model.Arquivo;
@@ -72,10 +74,10 @@ public class ControleReunioesWS {
 				}
 
 				@Override
-				public boolean shouldSkipClass(Class<?> paramClass) {
+				public boolean shouldSkipClass(Class<?> paramClass) { 
 					return false;
 				}
-			}).setDateFormat(Constants.DATETIME_PATTERN).create();
+			}).registerTypeAdapter(Date.class, new DateConverter()).create();
 			
 			
 			ReuniaoArquivoUsuario rau = gson.fromJson(valores, ReuniaoArquivoUsuario.class);
@@ -187,7 +189,7 @@ public class ControleReunioesWS {
 	@RequestMapping(value = "/buscarReunioes", method = RequestMethod.GET, consumes = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" }, produces = { MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8", "text/plain;charset=utf-8" })
 	public ResponseEntity<String> buscarReunioes(@RequestParam(value = "data") String data) throws Exception {
 		try {
-			Gson gson = new GsonBuilder().setDateFormat(Constants.DATETIME_PATTERN).excludeFieldsWithoutExposeAnnotation().create();
+			Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateConverter()).excludeFieldsWithoutExposeAnnotation().create();
 			Reuniao reuniao = new Reuniao();
 			reuniao.setDtInicio(ReuniaoUtils.stringToDateTime(data));
 			List<Reuniao> lstReunioes = reuniaoService.buscarReunioes(reuniao);
